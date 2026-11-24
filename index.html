@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#b4513a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Casimiro">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Finanzas Casimiro</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+/* Finanzas Casimiro. Libreta de caja de un local familiar: clara, ordenada, sin adornos.
+   IDEA las pestañas de una libreta: una para el local y una para cada una.
+   PICTURE el gráfico de meses (entró / salió / quedó), con la carga por voz justo arriba.
+   COLOUR blanco, tinta cálida, ladrillo para detalles y gastos, azul acero para ingresos.
+   TYPE Archivo ancho (125%) para títulos y cifras, Archivo normal para el texto.
+   LAYOUT pestañas arriba; carga; mes + cifras + gráfico; tarjetas en 2 columnas; movimientos. En celular, todo en una columna. */
+:root{color-scheme:light;--bg:#ffffff;--ink:#1f1a18;--mut:#625a55;--soft:#fbf3ef;--line:#ebdcd5;--grid:#efe7e3;--brick:#b4513a;--bink:#8a3a26;--btint:#f6e4dc;--in:#1f6fa3;--out:#b4513a;--warn:#fff4d6;--field:#9e8b83}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#161211;--ink:#f3ece8;--mut:#b9aca6;--soft:#221a18;--line:#3a2d29;--grid:#2c2321;--brick:#d4705a;--bink:#ef9c86;--btint:#3a241e;--in:#4a92cf;--out:#d4705a;--warn:#3a3116;--field:#7d6a63}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#161211;--ink:#f3ece8;--mut:#b9aca6;--soft:#221a18;--line:#3a2d29;--grid:#2c2321;--brick:#d4705a;--bink:#ef9c86;--btint:#3a241e;--in:#4a92cf;--out:#d4705a;--warn:#3a3116;--field:#7d6a63}
+*{box-sizing:border-box;min-width:0}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-stretch:125%;line-height:1.08;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-size:clamp(26px,3.4vw,36px);font-weight:700}h3{font-size:18px;font-weight:700}
+.band{padding:clamp(20px,3vw,40px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.top{border-bottom:3px solid var(--brick);padding-bottom:0}
+.toprow{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px}
+.brand{font-stretch:125%;font-weight:800;font-size:15px;color:var(--bink);margin-bottom:10px}
+.tabs{display:flex;gap:4px}
+.tabs button{font:inherit;font-stretch:125%;font-weight:700;font-size:clamp(17px,2.2vw,22px);padding:12px clamp(14px,2.4vw,28px);min-height:52px;border:1px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;background:var(--soft);color:var(--mut);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--brick);border-color:var(--brick);color:#fff}
+.askrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;margin-bottom:8px}.askrow label.big{margin:0}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mut)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;background:var(--bg)}
+.seg button{border:0;background:none;color:var(--ink);font:inherit;font-size:15px;padding:6px 14px;min-height:40px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.entry{background:var(--soft)}
+.egrid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(14px,2.5vw,28px);align-items:start}
+.mic{width:clamp(84px,10vw,112px);aspect-ratio:1;border-radius:50%;border:0;background:var(--brick);color:#fff;cursor:pointer;display:grid;place-items:center}
+.mic svg{width:40%;height:40%}.mic.on{animation:pulse 1.2s ease-in-out infinite}
+.mic[aria-disabled=true]{background:var(--bg);color:var(--mut);border:2px dashed var(--line);cursor:default}
+@keyframes pulse{50%{box-shadow:0 0 0 12px color-mix(in srgb,var(--brick) 25%,transparent)}}
+@media(prefers-reduced-motion:reduce){.mic.on{animation:none;outline:4px solid var(--brick);outline-offset:4px}}
+.miclab{font-size:13px;color:var(--mut);text-align:center;margin-top:6px;max-width:112px}
+label.big{display:block;font-stretch:125%;font-weight:700;font-size:21px;margin-bottom:8px}
+textarea,input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--field);border-radius:8px;padding:10px 12px;min-height:44px;width:100%}
+textarea{resize:vertical;min-height:92px}input:hover,select:hover,textarea:hover{border-color:var(--mut)}
+:focus-visible{outline:3px solid var(--in);outline-offset:2px}
+.partial{color:var(--mut);font-style:italic;min-height:1.4em;margin:6px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.btn{font:inherit;font-weight:600;font-size:15px;min-height:44px;padding:10px 18px;border-radius:8px;border:1px solid var(--ink);background:var(--bg);color:var(--ink);cursor:pointer}
+.btn.pri{background:var(--ink);color:var(--bg)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{min-height:36px;padding:5px 10px;font-size:13px;font-weight:500;border-color:var(--line)}
+.status{color:var(--mut);font-size:14px}
+.review{margin-top:18px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--grid);vertical-align:middle}
+th{font-size:13px;color:var(--mut);font-weight:600}.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rev td{padding:6px 4px}.rev input,.rev select{min-height:40px;padding:6px 8px}
+.mbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:16px}
+.nav{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink);border-bottom:1px solid var(--grid)}
+.kpi{padding:12px 16px 14px 0}.kpi+.kpi{padding-left:16px;border-left:1px solid var(--grid)}
+.kpi .l{font-size:14px;color:var(--mut)}.kpi .v{font-stretch:112%;font-size:clamp(24px,3.2vw,36px);font-weight:700;white-space:nowrap;line-height:1.2}
+.kpi .d{font-size:13px;color:var(--mut)}.kpi.hero .v{color:var(--bink)}.neg{color:var(--bink)!important}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--mut);margin:16px 0 4px}
+.key{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.key.line{height:3px;width:16px;border-radius:2px;vertical-align:4px}
+.fig{position:relative;min-height:290px}.fig>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;box-shadow:0 4px 14px -6px rgba(0,0,0,.25);min-width:170px;z-index:2}
+.tip b{display:block;font-size:14px;margin-bottom:2px}.tip div{display:flex;justify-content:space-between;gap:12px}.tip strong{font-variant-numeric:tabular-nums}
+details{margin-top:8px;max-width:100%;overflow:hidden}.scroll{max-width:100%}summary{cursor:pointer;color:var(--bink);font-weight:600;min-height:44px;display:flex;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:10px;padding:18px;background:var(--bg)}
+.card h3{margin-bottom:12px}
+.bar{display:grid;grid-template-columns:minmax(0,10em) minmax(0,1fr) 7.5em;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.bar .t{height:10px;background:var(--grid);border-radius:3px;overflow:hidden}.bar .t i{display:block;height:100%;border-radius:0 3px 3px 0}
+.bar .n{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.mini{font-size:14px}.mini td{padding:6px 4px}
+.total{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--grid);font-weight:700;display:flex;justify-content:space-between;gap:10px}
+.empty{color:var(--mut);padding:14px 0}
+.movhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:14px;min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--btint);border-color:var(--brick);color:var(--bink);font-weight:600}
+.mov td{font-size:15px}.note{display:block;font-size:12px;color:var(--mut)}tr.miss td{background:var(--warn)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--btint);color:var(--bink);white-space:nowrap}
+.rowact{white-space:nowrap;text-align:right}
+.tools{background:var(--soft)}.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:12px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;z-index:5;max-width:92vw}
+.toast button{background:none;border:0;color:inherit;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;min-height:40px}
+@media(pointer:coarse){.btn.sm,.chips button,.seg button{min-height:44px}}
+.scroll{overflow-x:auto}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:860px){.kpi .l{min-height:2.7em}.grid,.tgrid{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi:nth-child(3){border-left:0;padding-left:0}.kpi:nth-child(n+3){border-top:1px solid var(--grid)}}
+@media(max-width:600px){.egrid{gap:12px}.mic{width:60px}.miclab{display:none}
+ .tabs{width:100%}.tabs button{flex:1;padding:10px 6px}table{font-size:13px}
+ .stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:6.5em;text-align:start}
+ .stack td::before{content:attr(data-l);float:inline-start;width:6em;margin-inline-start:-6.5em;color:var(--mut)}.stack td:empty{display:none}
+ .rev thead{display:none}.rev tr{display:block;border-bottom:1px solid var(--line);padding:8px 0}.rev td{display:block;border:0}}
+
+.brandrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-bottom:10px}.brandrow .brand{margin:0}
+.me{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mut)}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px max(5vw,16px);background:var(--soft)}
+.login form{width:min(420px,100%);background:var(--bg);border:1px solid var(--line);border-top:6px solid var(--brick);border-radius:12px;padding:28px}
+.login h1{font-size:clamp(28px,6vw,36px);font-weight:800;margin:4px 0 6px}.login p{margin:0 0 18px;color:var(--mut)}
+.login label{display:block;font-weight:600;font-size:15px;margin:14px 0 6px}.login .btn{width:100%;margin-top:20px}
+.login .err{color:var(--bink);font-weight:600;min-height:1.5em;margin:12px 0 0}
+</style>
+</head>
+<body>
+<section class="login" id="login" hidden>
+  <form id="loginform" novalidate>
+    <div class="brand">Finanzas de la familia</div>
+    <h1>Casimiro</h1>
+    <p id="loginsub">Entrá con tu mail y tu contraseña.</p>
+    <label for="email">Mail</label><input id="email" type="email" autocomplete="username" inputmode="email" required>
+    <label for="pass">Contraseña</label><input id="pass" type="password" autocomplete="current-password" required>
+    <button class="btn pri" id="enter" type="submit">Entrar</button>
+    <p class="err" id="loginerr" role="alert"></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+<header class="band top"><div class="wrap">
+  <div class="brandrow"><div class="brand">Finanzas de la familia</div><div class="me"><span id="hola"></span><button class="btn sm" id="salir">Salir</button></div></div>
+  <div class="toprow">
+    <div class="tabs" role="tablist" aria-label="Libretas" id="tabs">
+      <button role="tab" id="t-n" data-b="n" aria-selected="true" aria-controls="main">Casimiro</button>
+      <button role="tab" id="t-f" data-b="f" aria-selected="false" aria-controls="main" tabindex="-1">Franche</button>
+      <button role="tab" id="t-p" data-b="p" aria-selected="false" aria-controls="main" tabindex="-1">Patri</button>
+    </div>
+  </div>
+</div></header>
+<main id="main" role="tabpanel" aria-labelledby="t-n">
+<section class="band entry" id="entry"><div class="wrap">
+  <div class="egrid">
+    <div><button class="mic" id="mic" aria-label="Dictar" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5"/></svg></button>
+      <div class="miclab" id="miclab">Preparando el micrófono…</div></div>
+    <div>
+      <label class="big" for="txt" id="asklab">¿Qué pasó en Casimiro?</label>
+      <textarea id="txt"></textarea>
+      <p class="partial" id="partial" aria-live="polite"></p>
+      <div class="actions"><button class="btn pri" id="go">Anotar</button><button class="btn" id="manual">Agregar a mano</button><span class="status" id="status" role="status"></span></div>
+    </div>
+  </div>
+  <div class="review" id="review" hidden>
+    <h3>Revisá antes de guardar</h3>
+    <div class="scroll"><table class="rev"><thead><tr><th>Fecha</th><th>Dónde va</th><th>Detalle</th><th>Rubro</th><th class="num">Monto</th><th>Pago</th><th><span class="sr">Quitar</span></th></tr></thead><tbody id="revrows"></tbody></table></div>
+    <div class="actions"><button class="btn pri" id="save">Guardar</button><button class="btn" id="addrow">Otra fila</button><button class="btn" id="cancel">Descartar</button><span class="status" id="savemsg" role="status"></span></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="mbar"><button class="nav" id="prev" aria-label="Mes anterior">‹</button><h2 id="mname" aria-live="polite">…</h2><button class="nav" id="next" aria-label="Mes siguiente">›</button><span class="status" id="load" role="status"></span></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="legend" id="legend"></div>
+  <div class="fig" id="fig"><svg id="chart" role="group" aria-label="Meses: tocá uno para verlo"></svg><div class="tip" id="tip" hidden></div></div>
+  <details><summary>Ver los números de cada mes</summary><div class="scroll"><table class="mini" id="mtable"></table></div></details>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap grid" id="cards"></div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <div class="movhead"><h2 id="movtitle">Movimientos del mes</h2><div class="chips" id="chips"></div></div>
+  <div class="scroll"><table class="mov stack"><thead><tr><th>Fecha</th><th>Qué</th><th>Detalle</th><th class="num">Monto</th><th>Pago</th><th><span class="sr">Acciones</span></th></tr></thead><tbody id="movs"></tbody></table></div>
+  <div class="actions"><button class="btn" id="more" hidden>Ver todos</button></div>
+</div></section>
+
+<section class="band tools"><div class="wrap">
+  <h2>Herramientas</h2>
+  <div class="tgrid">
+    <div><h3>Reporte de ventas del sistema</h3><p class="status">Subí el Excel que baja el sistema de stock. Se toma la fecha, el total y la forma de pago de cada venta. Las ventas que ya estaban no se repiten.</p>
+      <div class="actions"><label class="sr" for="rep">Archivo del reporte</label><input type="file" id="rep" accept=".xlsx,.xls,.csv" style="max-width:340px"><button class="btn pri" id="repgo" hidden>Importar ventas</button></div><p class="status" id="repmsg" role="status"></p></div>
+    <div><h3>Bajar todo</h3><p class="status">Un archivo CSV con todos los movimientos de las tres libretas, para abrir en Excel o Google Sheets.</p><div class="actions"><button class="btn" id="csv">Descargar CSV</button><span class="status" id="csvmsg" role="status"></span></div></div>
+  </div>
+</div></section>
+</main>
+</div>
+<div class="toast" id="toast" hidden role="status"><span id="toastt"></span><button id="toastb">Deshacer</button></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
