@@ -271,7 +271,10 @@ async function interpret() {
     else { $('#status').textContent = ''; openReview([...rev, ...arr]); }
   } catch (e) {
     const st = e && e.context && e.context.status;
+    let det = ''; try { det = await e.context.clone().text(); } catch (_) {}
     $('#status').textContent = st === 403 ? 'Tu usuario no está habilitado para usar Claude. Revisá la tabla "miembros".'
+      : st === 502 && /authentication_error|invalid x-api-key/.test(det) ? 'Claude no acepta la clave guardada en Supabase (ANTHROPIC_API_KEY): hay que cargarla de nuevo. Mientras tanto, agregalo a mano.'
+      : st === 502 && /credit balance/i.test(det) ? 'Se terminó el crédito de Claude: cargá saldo en platform.claude.com. Mientras tanto, agregalo a mano.'
       : st === 500 ? 'Falta la clave de Claude en Supabase (paso 2 de la guía). Mientras tanto, agregalo a mano.'
       : st === 404 ? 'Falta publicar la función "interpretar" en Supabase (paso 2 de la guía). Mientras tanto, agregalo a mano.'
       : 'No se pudo interpretar el texto. Probá de nuevo o agregalo a mano.';
