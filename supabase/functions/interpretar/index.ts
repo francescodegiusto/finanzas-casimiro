@@ -62,7 +62,7 @@ Ignorá lo que no sea un movimiento de plata. Sin movimientos: [].
 Texto: """${texto}"""`;
 
   // 3. Pedido a Claude
-  const key = Deno.env.get("ANTHROPIC_API_KEY");
+  const key = (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^["']+|["']+$/g, "");
   if (!key) return json({ error: "Falta configurar ANTHROPIC_API_KEY" }, 500);
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -73,7 +73,7 @@ Texto: """${texto}"""`;
       messages: [{ role: "user", content: prompt }],
     }),
   });
-  if (!r.ok) return json({ error: `Claude respondió ${r.status}`, detalle: (await r.text()).slice(0, 300) }, 502);
+  if (!r.ok) return json({ error: `Claude respondió ${r.status}`, detalle: (await r.text()).slice(0, 300), clave: r.status === 401 ? { largo: key.length, empieza: key.slice(0, 7), termina: key.slice(-4) } : undefined }, 502);
   const out = await r.json();
   const text = (out.content ?? []).map((c: { text?: string }) => c.text ?? "").join("");
   const a = text.indexOf("["), b = text.lastIndexOf("]");
