@@ -5,5 +5,5 @@
 // NUNCA pongas acá la clave de Claude ni la clave "service_role" / "secret".
 window.CONFIG = {
   SUPABASE_URL: 'https://ttxwiujqltyxpcoknocj.supabase.co',
-  SUPABASE_KEY: 'TU-CLAVE-PUBLICA'
+  SUPABASE_KEY: 'sb_publishable_tD4c21R0_OPciTmarm2cKA_e_uoIi06'
 };
